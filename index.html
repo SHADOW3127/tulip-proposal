@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Tulip Proposal 🌷</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -13,64 +14,95 @@
 body{
   margin:0;
   height:100vh;
-  background:radial-gradient(circle,#ffe4ec,#f6b7c9);
+  background:radial-gradient(circle at top,#ffe4ec,#f6b7c9 60%,#e9a1b5);
+  overflow:hidden;
   display:flex;
   justify-content:center;
   align-items:center;
-  overflow:hidden;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* 🎥 Canvas sparkles */
+/* ✨ Sparkle canvas */
 #sparkleCanvas{
   position:fixed;
   inset:0;
-  z-index:1;
+  z-index:2;
   pointer-events:none;
 }
 
-/* 🌷 Background SVG tulips */
-.bg-tulips{
+/* 🌸 Parallax Tulip Layers */
+.parallax{
   position:fixed;
   inset:0;
-  z-index:0;
   pointer-events:none;
+  z-index:0;
 }
 
-.bg-tulip{
+.layer{
   position:absolute;
-  width:36px;
-  opacity:.25;
-  animation:sway 14s ease-in-out infinite, glow 7s ease-in-out infinite;
+  inset:0;
 }
+
+.tulip{
+  position:absolute;
+  width:34px;
+  opacity:.3;
+  animation:
+    sway 14s ease-in-out infinite,
+    glow 6s ease-in-out infinite,
+    bloom 1.8s ease forwards;
+  transform:scale(0);
+}
+
+.tulip.big{width:48px; opacity:.35}
+.tulip.small{width:26px; opacity:.25}
 
 @keyframes sway{
-  0%,100%{transform:translateY(0) rotate(-4deg)}
-  50%{transform:translateY(-12px) rotate(4deg)}
+  0%,100%{transform:translateY(0) rotate(-4deg) scale(1)}
+  50%{transform:translateY(-14px) rotate(4deg) scale(1)}
 }
 
 @keyframes glow{
-  0%,100%{filter:drop-shadow(0 0 4px #ff8fb1)}
-  50%{filter:drop-shadow(0 0 10px #ff2e63)}
+  0%,100%{filter:drop-shadow(0 0 4px rgba(255,120,160,.6))}
+  50%{filter:drop-shadow(0 0 12px rgba(255,80,140,.9))}
 }
 
-/* 🌷 Main scene */
+/* 🌷 Bloom animation */
+@keyframes bloom{
+  from{transform:scale(0)}
+  to{transform:scale(1)}
+}
+
+/* 💖 Heart tulips */
+.heart{
+  position:absolute;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+  pointer-events:none;
+}
+
+.heart .tulip{
+  opacity:.45;
+}
+
+/* 🌷 Scene */
 .scene{
   position:relative;
   width:340px;
   height:560px;
-  z-index:2;
+  z-index:3;
 }
 
-/* 🌷 Main SVG Tulip */
+/* 🌷 Main Tulip */
 .main-tulip{
   position:absolute;
   bottom:0;
   left:50%;
-  transform:translateX(-50%);
+  transform:translateX(-50%) scale(0);
   width:160px;
-  filter:drop-shadow(0 0 12px #ff6b9d);
-  animation:glow 4s ease-in-out infinite;
+  animation:bloom 2s ease forwards, glow 4s ease-in-out infinite;
 }
 
 /* 💌 Card */
@@ -82,7 +114,7 @@ body{
   width:260px;
   background:#fff;
   padding:16px;
-  border-radius:20px;
+  border-radius:22px;
   text-align:center;
   box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
@@ -108,11 +140,10 @@ img{
 
 button{
   border:none;
-  padding:12px 22px;
-  border-radius:28px;
+  padding:12px 26px;
+  border-radius:30px;
   font-size:16px;
   font-weight:700;
-  cursor:pointer;
 }
 
 #yes{background:#ff2e63;color:#fff}
@@ -129,7 +160,7 @@ button{
   opacity:0;
   pointer-events:none;
   transition:.5s;
-  z-index:5;
+  z-index:6;
 }
 
 .popup.show{
@@ -141,10 +172,10 @@ button{
   background:#fff;
   width:90%;
   max-width:420px;
-  padding:24px;
-  border-radius:26px;
+  padding:26px;
+  border-radius:28px;
   font-family:'Patrick Hand';
-  font-size:17px;
+  font-size:18px;
   line-height:1.6;
   animation:pop .6s ease;
 }
@@ -159,8 +190,8 @@ button{
   font-family:'Pacifico';
   color:#ff2e63;
   text-align:center;
-  font-size:22px;
-  text-shadow:0 0 12px #ff7aa8;
+  font-size:24px;
+  text-shadow:0 0 16px #ff7aa8;
 }
 </style>
 </head>
@@ -169,20 +200,22 @@ button{
 
 <canvas id="sparkleCanvas"></canvas>
 
-<!-- 🌷 Background Tulips -->
-<div class="bg-tulips">
-  <img class="bg-tulip" style="top:12%;left:8%" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 96'><path fill='%23ff6b9d' d='M32 4c-8 10-18 18-18 34 0 16 18 40 18 40s18-24 18-40C50 22 40 14 32 4z'/><rect x='30' y='36' width='4' height='50' fill='%234caf50'/></svg>">
-  <img class="bg-tulip" style="top:45%;right:12%" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 96'><path fill='%23ff6b9d' d='M32 4c-8 10-18 18-18 34 0 16 18 40 18 40s18-24 18-40C50 22 40 14 32 4z'/><rect x='30' y='36' width='4' height='50' fill='%234caf50'/></svg>">
+<!-- 🌸 PARALLAX BACKGROUND -->
+<div class="parallax">
+  <div class="layer" id="layer1"></div>
+  <div class="layer" id="layer2"></div>
 </div>
 
-<div class="scene">
+<!-- 💖 HEART SHAPE -->
+<div class="heart" id="heartLayer"></div>
 
+<div class="scene">
   <div class="card">
     <h1>Saaraaaara 🌷</h1>
     <img src="milk-and-mocha-bear-hug.gif">
     <p><b>Will you be my Valentine?</b></p>
     <div class="buttons">
-      <button id="yes">Yes ❤️</button>
+      <button id="yes">Yes 💖</button>
       <button id="no">No 🙈</button>
     </div>
   </div>
@@ -191,7 +224,6 @@ button{
     <path d="M32 4c-8 10-18 18-18 34 0 16 18 40 18 40s18-24 18-40C50 22 40 14 32 4z" fill="#ff6b9d"/>
     <rect x="30" y="36" width="4" height="50" fill="#4caf50"/>
   </svg>
-
 </div>
 
 <div class="popup" id="popup">
@@ -208,58 +240,96 @@ button{
 </audio>
 
 <script>
-/* 🎥 Canvas Sparkles (mouse + touch) */
-const canvas = document.getElementById('sparkleCanvas');
-const ctx = canvas.getContext('2d');
-let sparks = [];
+/* 🌷 Tulip SVG */
+const tulipSVG = `
+<svg viewBox="0 0 64 96">
+<path fill="#ff6b9d" d="M32 4c-8 10-18 18-18 34 0 16 18 40 18 40s18-24 18-40C50 22 40 14 32 4z"/>
+<rect x="30" y="36" width="4" height="50" fill="#4caf50"/>
+</svg>`;
+
+/* 🌸 Fill screen with tulips */
+function fillLayer(layer,count){
+  for(let i=0;i<count;i++){
+    const d=document.createElement('div');
+    d.className='tulip '+(Math.random()>.6?'big':'');
+    d.style.left=Math.random()*100+'%';
+    d.style.top=Math.random()*100+'%';
+    d.innerHTML=tulipSVG;
+    layer.appendChild(d);
+  }
+}
+
+fillLayer(layer1,20);
+fillLayer(layer2,30);
+
+/* 💖 Heart shape tulips */
+const heart=document.getElementById('heartLayer');
+for(let i=0;i<26;i++){
+  const angle=i/26*Math.PI*2;
+  const x=50+16*Math.pow(Math.sin(angle),3);
+  const y=50-(13*Math.cos(angle)-5*Math.cos(2*angle)-2*Math.cos(3*angle));
+  const t=document.createElement('div');
+  t.className='tulip';
+  t.style.left=x+'%';
+  t.style.top=y+'%';
+  t.innerHTML=tulipSVG;
+  heart.appendChild(t);
+}
+
+/* ✨ Sparkles (canvas) */
+const canvas=document.getElementById('sparkleCanvas');
+const ctx=canvas.getContext('2d');
+let sparks=[];
 
 function resize(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
 }
 resize();
-window.addEventListener('resize', resize);
+addEventListener('resize',resize);
 
 function addSpark(x,y){
-  for(let i=0;i<2;i++) sparks.push({x,y,life:30});
+  for(let i=0;i<2;i++)sparks.push({x,y,life:28});
 }
 
-document.addEventListener('mousemove',e=>addSpark(e.clientX,e.clientY));
-document.addEventListener('touchmove',e=>{
+addEventListener('mousemove',e=>addSpark(e.clientX,e.clientY));
+addEventListener('touchmove',e=>{
   const t=e.touches[0];
-  if(t) addSpark(t.clientX,t.clientY);
+  if(t)addSpark(t.clientX,t.clientY);
 },{passive:true});
 
-function animate(){
+(function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  sparks = sparks.filter(s=>s.life>0);
+  sparks=sparks.filter(s=>s.life>0);
   sparks.forEach(s=>{
     ctx.beginPath();
     ctx.arc(s.x,s.y,2,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${s.life/30})`;
+    ctx.fillStyle=`rgba(255,255,255,${s.life/28})`;
     ctx.fill();
-    s.y-=0.4;
+    s.y-=0.3;
     s.life--;
   });
   requestAnimationFrame(animate);
-}
-animate();
+})();
 
-/* 🎵 Music (iOS safe) */
-const audio = document.getElementById('bgMusic');
-document.addEventListener('click',()=>{
-  audio.volume=0.4;
+/* 🎵 Audio */
+const audio=document.getElementById('bgMusic');
+addEventListener('click',()=>{
+  audio.volume=.4;
   audio.play().catch(()=>{});
 },{once:true});
 
 /* ❤️ Buttons */
-const popup=document.getElementById('popup');
-document.getElementById('yes').onclick=()=>popup.classList.add('show');
+document.getElementById('yes').onclick=()=>{
+  document.getElementById('popup').classList.add('show');
+};
 
 document.getElementById('no').onclick=e=>{
-  e.target.style.transform=`translate(${Math.random()*60-30}px,${Math.random()*40-20}px)`;
+  e.target.style.transform=`translate(${Math.random()*70-35}px,${Math.random()*50-25}px)`;
 };
 </script>
 
 </body>
 </html>
+
+
